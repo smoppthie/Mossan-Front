@@ -10,7 +10,7 @@ function Sidebar() {
     <Box
       sx={{
         width: 250,
-        bgcolor: '#f5f5f5',
+        bgcolor: '#6b8d59', 
         padding: 2,
         height: '100vh',
         display: 'flex',

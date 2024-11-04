@@ -1,16 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
 import React from 'react';
-import Header from './componentes/Header'; 
+import Sidebar from './components/Sidebar';
+import MainContent from './components/MainContent';
+import { Box } from '@mui/material';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header />  {/* Usamos el componente */}
-      <p>Esto es un ejemplo básico de una página en React.</p>
-    </div>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Sidebar />
+      <MainContent />
+    </Box>
   );
 }
-
-
 export default App;

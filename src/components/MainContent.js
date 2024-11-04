@@ -4,10 +4,10 @@ import { Box, Typography, Button } from '@mui/material';
 
 function MainContent() {
   return (
-    <Box sx={{ display: 'flex', flex: 1, padding: 3 }}>
+    <Box sx={{ display: 'flex', flex: 1, padding: 3, bgcolor: '#a8cc94' }}>  {/* Color de fondo cambiado */}
       <Box
         component="img"
-        src="https://via.placeholder.com/600x400"
+        src="https://cdn.shopify.com/s/files/1/2481/2502/files/mueble_tv_heron_2048x2048.webp?v=1674665197" 
         alt="Muebles acogedores"
         sx={{ width: '50%', borderRadius: 2, marginRight: 3 }}
       />
