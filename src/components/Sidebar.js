@@ -5,6 +5,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import HouseIcon from '@mui/icons-material/House'; // Icono de casa
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
   return (
@@ -92,9 +93,9 @@ function Sidebar() {
 
       <Divider sx={{ my: 2, width: '80%' }} />
 
-      {/* Lista de navegación con estilo minimalista */}
+      {/* Lista de navegación con enlaces */}
       <List sx={{ width: '100%', textAlign: 'center' }}>
-        <ListItem button sx={{ justifyContent: 'center', padding: '10px 0' }}>
+        <ListItem button component={Link} to="/" sx={{ justifyContent: 'center', padding: '10px 0' }}>
           <HomeIcon sx={{ mr: 1, color: '#666' }} />
           <ListItemText
             primary="Inicio"
@@ -107,18 +108,18 @@ function Sidebar() {
             }}
           />
         </ListItem>
-        <ListItem button sx={{ justifyContent: 'center', padding: '10px 0' }}>
-          <ListItemText
-            primary="Productos"
-            primaryTypographyProps={{
-              sx: {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                color: '#666',
-              },
-            }}
-          />
-        </ListItem>
+        <ListItem button component={Link} to="/products" sx={{ justifyContent: 'center', padding: '10px 0' }}>
+  <ListItemText
+    primary="Productos"
+    primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        fontSize: '1rem',
+        color: '#666',
+      },
+    }}
+  />
+</ListItem>
         <ListItem button sx={{ justifyContent: 'center', padding: '10px 0' }}>
           <ListItemText
             primary="Sobre nosotros"
