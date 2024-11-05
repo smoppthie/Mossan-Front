@@ -4,7 +4,7 @@ import { Box, Typography, List, ListItem, ListItemText, IconButton, Divider, Inp
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
-import HouseIcon from '@mui/icons-material/House'; // Icono de casa
+import HouseIcon from '@mui/icons-material/House';
 import { Link } from 'react-router-dom';
 
 function Sidebar() {
@@ -12,7 +12,7 @@ function Sidebar() {
     <Box
       sx={{
         width: 250,
-        bgcolor: '#f0f4e3', // Fondo claro y cálido
+        bgcolor: '#f0f4e3',
         padding: 2,
         height: '100vh',
         display: 'flex',
@@ -22,13 +22,13 @@ function Sidebar() {
     >
       {/* Encabezado con icono de casa y texto */}
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', mb: 2 }}>
-        <HouseIcon sx={{ fontSize: 40, color: '#666', mb: 1 }} /> {/* Icono de casa */}
+        <HouseIcon sx={{ fontSize: 40, color: '#666', mb: 1 }} />
         <Typography
           variant="h4"
           component="div"
           sx={{
             fontWeight: 'bold',
-            color: '#333',  // Color del texto
+            color: '#333',
             textAlign: 'center',
             fontSize: '1.5rem',
           }}
@@ -45,7 +45,7 @@ function Sidebar() {
         >
           Tienda de muebles
         </Typography>
-        <Divider sx={{ width: '60%', mt: 1, mb: 2, bgcolor: '#666' }} /> {/* Línea decorativa */}
+        <Divider sx={{ width: '60%', mt: 1, mb: 2, bgcolor: '#666' }} />
       </Box>
 
       {/* Botón de Cesta */}
@@ -53,14 +53,14 @@ function Sidebar() {
         variant="contained"
         startIcon={<ShoppingCartIcon />}
         sx={{
-          backgroundColor: '#ffffff', // Blanco para fondo
-          color: '#666', // Gris para el texto
-          borderRadius: 20, // Borde redondeado
-          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Sombra suave
+          backgroundColor: '#ffffff',
+          color: '#666',
+          borderRadius: 20,
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
           padding: '5px 15px',
-          textTransform: 'none', // Texto sin mayúsculas
+          textTransform: 'none',
           fontWeight: 'bold',
-          mb: 3, // Espacio abajo
+          mb: 3,
           '&:hover': {
             backgroundColor: '#e8e8e8',
           },
@@ -109,18 +109,18 @@ function Sidebar() {
           />
         </ListItem>
         <ListItem button component={Link} to="/products" sx={{ justifyContent: 'center', padding: '10px 0' }}>
-  <ListItemText
-    primary="Productos"
-    primaryTypographyProps={{
-      sx: {
-        fontWeight: 'bold',
-        fontSize: '1rem',
-        color: '#666',
-      },
-    }}
-  />
-</ListItem>
-        <ListItem button sx={{ justifyContent: 'center', padding: '10px 0' }}>
+          <ListItemText
+            primary="Productos"
+            primaryTypographyProps={{
+              sx: {
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                color: '#666',
+              },
+            }}
+          />
+        </ListItem>
+        <ListItem button component={Link} to="/about" sx={{ justifyContent: 'center', padding: '10px 0' }}>
           <ListItemText
             primary="Sobre nosotros"
             primaryTypographyProps={{
