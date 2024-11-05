@@ -132,18 +132,18 @@ function Sidebar() {
             }}
           />
         </ListItem>
-        <ListItem button sx={{ justifyContent: 'center', padding: '10px 0' }}>
-          <ListItemText
-            primary="Contáctanos"
-            primaryTypographyProps={{
-              sx: {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                color: '#666',
-              },
-            }}
-          />
-        </ListItem>
+            <ListItem button component={Link} to="/contact" sx={{ justifyContent: 'center', padding: '10px 0' }}>
+      <ListItemText
+        primary="Contáctanos"
+        primaryTypographyProps={{
+          sx: {
+            fontWeight: 'bold',
+            fontSize: '1rem',
+            color: '#666',
+          },
+        }}
+      />
+    </ListItem>
       </List>
     </Box>
   );
