@@ -8,7 +8,7 @@ function ProductsPage() {
 
   useEffect(() => {
     // Cambia la URL para apuntar a la API correcta
-    axios.get('http://localhost:4000/api/products')
+    axios.get('http://localhost:4000/api/productos')
       .then(response => setProducts(response.data))
       .catch(error => console.error('Error al cargar los productos:', error));
   }, []);
