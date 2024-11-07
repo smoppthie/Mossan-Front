@@ -1,4 +1,3 @@
-// src/components/ProductsPage.js
 import React, { useState, useEffect } from 'react';
 import { Box, Grid, Typography, Button, Card, CardContent, CardMedia } from '@mui/material';
 import axios from 'axios';
@@ -29,7 +28,7 @@ function ProductsPage() {
               <CardMedia
                 component="img"
                 height="200"
-                image={product.image || 'https://via.placeholder.com/200'} // Imagen por defecto
+                image={`http://localhost:4000/uploads/${product.imagen}`} // URL para las imágenes
                 alt={product.nombre || 'Producto'}
               />
               <CardContent>
