@@ -77,8 +77,14 @@ function Sidebar() {
           {cart.length === 0 ? (
             <>
               <Typography variant="body1" sx={{ color: '#666', mb: 2 }}>Tu carrito está vacío</Typography>
-              <Button variant="outlined" sx={{ mt: 2, mb: 1, width: '100%' }}>TUS FAVORITOS</Button>
-              <Button variant="outlined" sx={{ width: '100%' }}>SEGUIR COMPRANDO</Button>
+
+              <Button
+                variant="outlined"
+                sx={{ width: '100%' }}
+                onClick={toggleDrawer(false)} // Cierra el carrito
+              >
+                SEGUIR COMPRANDO
+              </Button>
             </>
           ) : (
             <>
