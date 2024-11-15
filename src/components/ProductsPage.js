@@ -1,12 +1,12 @@
-// src/components/ProductsPage.js
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Typography, Button, Card, CardContent, CardMedia, InputBase } from '@mui/material';
+import { Box, Grid, Typography, Button, Card, CardContent, CardMedia, InputBase, Snackbar } from '@mui/material';
 import axios from 'axios';
 import { useCart } from './CartContext';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
-  const [searchText, setSearchText] = useState(''); // Estado para el texto de búsqueda
+  const [searchText, setSearchText] = useState('');
+  const { addToCart, notification, openSnackbar, setOpenSnackbar } = useCart();  // Usamos el estado global de la notificación
 
   useEffect(() => {
     axios.get('http://localhost:4000/api/productos')
@@ -18,10 +18,13 @@ function ProductsPage() {
     product.nombre.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const { addToCart } = useCart();
   const handleAddToCart = (product) => {
     addToCart(product);
-    alert(`${product.nombre} agregado a la cesta`);
+    setOpenSnackbar(true);  // Activamos la notificación global cuando se agrega un producto al carrito
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);  // Cerramos la notificación
   };
 
   return (
@@ -30,12 +33,11 @@ function ProductsPage() {
         Muebles
       </Typography>
 
-      {/* Barra de búsqueda */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, width: '100%', bgcolor: '#ffffff', borderRadius: 1, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', padding: '5px 10px' }}>
         <InputBase
           placeholder="Buscar productos por nombre"
           value={searchText}
-          onChange={(e) => setSearchText(e.target.value)} // Actualiza el texto de búsqueda
+          onChange={(e) => setSearchText(e.target.value)} 
           sx={{ ml: 1, flex: 1, color: '#666' }}
         />
       </Box>
@@ -75,7 +77,7 @@ function ProductsPage() {
                   color="primary" 
                   fullWidth 
                   sx={{ marginTop: 1 }}
-                  onClick={() => addToCart(product)}
+                  onClick={() => handleAddToCart(product)}
                 >
                   Agregar a cesta
                 </Button>
@@ -84,6 +86,14 @@ function ProductsPage() {
           </Grid>
         ))}
       </Grid>
+
+      {/* Snackbar para mostrar la notificación de agregado al carrito */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}  // Duración de la notificación (3 segundos)
+        onClose={handleCloseSnackbar}
+        message={notification}
+      />
     </Box>
   );
 }
