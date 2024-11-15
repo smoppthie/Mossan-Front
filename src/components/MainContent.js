@@ -1,6 +1,7 @@
 // src/components/MainContent.js
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate para la navegación
 
 function MainContent() {
   const images = [
@@ -11,6 +12,7 @@ function MainContent() {
 
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(true);
+  const navigate = useNavigate(); // Hook para la navegación
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,7 +21,7 @@ function MainContent() {
         setCurrentImage((prevImage) => (prevImage + 1) % images.length);
         setFade(true);
       }, 500); // Tiempo para el fade-out antes de cambiar la imagen
-    }, 2000); // Intervalo de cambio de imagen (5 segundos)
+    }, 2000); // Intervalo de cambio de imagen
 
     return () => clearInterval(interval);
   }, [images.length]);
@@ -88,6 +90,7 @@ function MainContent() {
               backgroundColor: '#A0522D',
             },
           }}
+          onClick={() => navigate('/products')} // Navegación a la página de productos
         >
           Echa un vistazo
         </Button>
