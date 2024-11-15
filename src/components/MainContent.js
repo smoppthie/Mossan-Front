@@ -89,7 +89,7 @@ function MainContent() {
             },
           }}
         >
-          VER CATALOGO
+          Echa un vistazo
         </Button>
       </Box>
     </Box>
