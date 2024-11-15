@@ -75,7 +75,7 @@ function ProductsPage() {
                   color="primary" 
                   fullWidth 
                   sx={{ marginTop: 1 }}
-                  onClick={() => handleAddToCart(product)}
+                  onClick={() => addToCart(product)}
                 >
                   Agregar a cesta
                 </Button>

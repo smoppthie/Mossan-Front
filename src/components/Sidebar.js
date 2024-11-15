@@ -5,17 +5,22 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import HouseIcon from '@mui/icons-material/House';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
 
 
 function Sidebar() {
-  const { cart } = useCart(); // Obtén la lista de productos en la cesta
+  const { cart, removeFromCart, updateQuantity } = useCart();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
+  };
+
+  // Definición de la función calculateSubtotal
+  const calculateSubtotal = () => {
+    return cart.reduce((sum, item) => sum + item.precio * item.quantity, 0);
   };
 
   return (
@@ -45,7 +50,7 @@ function Sidebar() {
       <Button
         variant="contained"
         startIcon={<ShoppingCartIcon />}
-        onClick={toggleDrawer(true)} // Abre el Drawer al hacer clic
+        onClick={toggleDrawer(true)}
         sx={{
           backgroundColor: '#ffffff',
           color: '#666',
@@ -66,21 +71,75 @@ function Sidebar() {
       {/* Drawer para el carrito */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box sx={{ width: 300, padding: 3, textAlign: 'center' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Mi Carrito</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>Mi Carrito</Typography>
+
+
           {cart.length === 0 ? (
             <>
               <Typography variant="body1" sx={{ color: '#666', mb: 2 }}>Tu carrito está vacío</Typography>
-              <Button variant="outlined" sx={{ mt: 2, mb: 1, width: '100%' }}>TUS FAVORITOS</Button>
-              <Button variant="outlined" sx={{ width: '100%' }}>SEGUIR COMPRANDO</Button>
+
+              <Button
+                variant="outlined"
+                sx={{ width: '100%' }}
+                onClick={toggleDrawer(false)} // Cierra el carrito
+              >
+                SEGUIR COMPRANDO
+              </Button>
             </>
           ) : (
-            <List>
-              {cart.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={`${item.nombre} - $${item.precio.toLocaleString()}`} />
-                </ListItem>
-              ))}
-            </List>
+            <>
+              <List>
+                {cart.map((item, index) => (
+                  <ListItem key={index} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <img src={`http://localhost:4000/uploads/${item.imagen}`} alt={item.nombre} style={{ width: 50, height: 50, marginRight: 10 }} />
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="body2">{item.nombre}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>${item.precio.toLocaleString()}</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <IconButton onClick={() => updateQuantity(item.id_producto, item.quantity - 1)}>-</IconButton>
+                      <Typography>{item.quantity}</Typography>
+                      <IconButton onClick={() => updateQuantity(item.id_producto, item.quantity + 1)}>+</IconButton>
+                    </Box>
+                    <IconButton onClick={() => removeFromCart(item.id_producto)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </List>
+
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ textAlign: 'left', padding: '0 16px' }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>Subtotal</Typography>
+                <Typography variant="body2">${calculateSubtotal().toLocaleString()}</Typography>
+
+                <Typography variant="body2" sx={{ mt: 1 }}>Costo de Envío</Typography>
+                <Typography variant="body2" color="text.secondary">Calculado en el checkout</Typography>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total</Typography>
+                <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#333' }}>
+                  ${calculateSubtotal().toLocaleString()}
+                </Typography>
+              </Box>
+
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  backgroundColor: '#7b7b7b',
+                  color: '#fff',
+                  borderRadius: '20px',
+                  mt: 2,
+                  padding: '10px',
+                  fontWeight: 'bold',
+                  textTransform: 'none',
+                }}
+              >
+                IR A PAGAR
+              </Button>
+            </>
           )}
         </Box>
       </Drawer>
