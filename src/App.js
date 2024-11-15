@@ -4,8 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
-import HomePage from './components/MainContent'; // Ajusta según tu estructura
-import ProductsPage from './components/ProductsPage'; // Ajusta según tu estructura
+import ContactPage from './components/ContactPage'; // Página de contacto
+import HomePage from './components/MainContent'; // Página principal
+import ProductsPage from './components/ProductsPage'; // Página de productos
+import AboutPage from './components/AboutPage'; // Página acerca de nosotros
+
 import { CartProvider } from './components/CartContext';
 import './App.css';
 
@@ -24,6 +27,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage searchText={searchText} />} />
                 <Route path="/products" element={<ProductsPage />} />
+                <Route path="/contact" element={<ContactPage />} /> {/* Ruta para ContactPage */}
+                <Route path="/about" element={<AboutPage />} /> {/* Ruta para AboutPage */}
               </Routes>
             </Box>
           </Box>
