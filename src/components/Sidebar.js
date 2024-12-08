@@ -27,33 +27,48 @@ function Sidebar({ searchText, setSearchText }) {
 
   // Función para manejar el pago y eliminar los productos del carrito
   const handleCheckout = async () => {
+    if (cart.length === 0) {
+      alert('El carrito está vacío. Agrega productos antes de realizar el pago.');
+      return;
+    }
+  
+    // Preparamos los datos para enviarlos al backend
     const productUpdates = cart.map(item => ({
       id_producto: item.id_producto,
-      quantity: item.quantity,
-    })); // Aquí estamos mapeando el carrito para enviar la cantidad comprada de cada producto.
+      cantidad: item.cantidad,
+    }));
   
     try {
       // Enviar la actualización al backend
-      const response = await fetch('/api/products/update-quantity', {
+      const response = await fetch('/api/productos/update-quantity', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productUpdates }), // Enviamos la cantidad que el usuario quiere comprar
+        body: JSON.stringify({ productUpdates }),
       });
   
-      if (response.ok) {
-        // Si la respuesta es exitosa, vaciar el carrito y mostrar un mensaje
-        alert('Pago realizado exitosamente');
-        // Eliminar los productos del carrito (solo en el frontend)
-        cart.forEach(item => removeFromCart(item.id_producto)); // Eliminar productos del carrito localmente
-      } else {
-        throw new Error('Error al procesar el pago');
+      // Verificamos la respuesta del servidor
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || 'Error al procesar el pago. Intenta nuevamente.'
+        );
       }
+  
+      // Si la respuesta es exitosa, vaciamos el carrito
+      alert('Pago realizado exitosamente');
+      cart.forEach(item => removeFromCart(item.id_producto));
+  
+      // Actualizar el estado del carrito (si usas React, por ejemplo)
+      // setCart([]); // Solo si usas un estado en React
+  
     } catch (error) {
+      // Manejo del error
       alert('Hubo un error al procesar el pago: ' + error.message);
     }
   };
+  
   
 
   return (
