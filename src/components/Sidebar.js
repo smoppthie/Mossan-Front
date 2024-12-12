@@ -1,4 +1,3 @@
-// src/components/Sidebar.js
 import React, { useState } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, IconButton, Divider, InputBase, Button, Drawer } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -9,8 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
 
-
-function Sidebar() {
+function Sidebar({ searchText, setSearchText }) {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -18,10 +16,60 @@ function Sidebar() {
     setDrawerOpen(open);
   };
 
-  // Definición de la función calculateSubtotal
+  // Calcular el subtotal
   const calculateSubtotal = () => {
     return cart.reduce((sum, item) => sum + item.precio * item.quantity, 0);
   };
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value); // Actualiza el texto de búsqueda
+  };
+
+  // Función para manejar el pago y eliminar los productos del carrito
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      alert('El carrito está vacío. Agrega productos antes de realizar el pago.');
+      return;
+    }
+  
+    // Preparamos los datos para enviarlos al backend
+    const productUpdates = cart.map(item => ({
+      id_producto: item.id_producto,
+      cantidad: item.cantidad,
+    }));
+  
+    try {
+      // Enviar la actualización al backend
+      const response = await fetch('/api/productos/update-quantity', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productUpdates }),
+      });
+  
+      // Verificamos la respuesta del servidor
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || 'Error al procesar el pago. Intenta nuevamente.'
+        );
+      }
+  
+      // Si la respuesta es exitosa, vaciamos el carrito
+      alert('Pago realizado exitosamente');
+      cart.forEach(item => removeFromCart(item.id_producto));
+  
+      // Actualizar el estado del carrito (si usas React, por ejemplo)
+      // setCart([]); // Solo si usas un estado en React
+  
+    } catch (error) {
+      // Manejo del error
+      alert('Hubo un error al procesar el pago: ' + error.message);
+    }
+  };
+  
+  
 
   return (
     <Box
@@ -46,6 +94,24 @@ function Sidebar() {
         <Divider sx={{ width: '60%', mt: 1, mb: 2, bgcolor: '#666' }} />
       </Box>
 
+      {/* Barra de búsqueda */}
+      <Box sx={{ width: '100%', mb: 2 }}>
+        <InputBase
+          value={searchText}
+          onChange={handleSearchChange}
+          placeholder="Buscar productos..."
+          sx={{
+            width: '100%',
+            padding: '8px 10px',
+            borderRadius: 20,
+            border: '1px solid #ccc',
+            backgroundColor: '#fff',
+            fontSize: '1rem',
+          }}
+          startAdornment={<SearchIcon sx={{ color: '#666', mr: 1 }} />}
+        />
+      </Box>
+
       {/* Botón de Cesta */}
       <Button
         variant="contained"
@@ -65,7 +131,7 @@ function Sidebar() {
           },
         }}
       >
-        Cesta
+        Cesta ({cart.length})
       </Button>
 
       {/* Drawer para el carrito */}
@@ -73,11 +139,9 @@ function Sidebar() {
         <Box sx={{ width: 300, padding: 3, textAlign: 'center' }}>
           <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>Mi Carrito</Typography>
 
-
           {cart.length === 0 ? (
             <>
               <Typography variant="body1" sx={{ color: '#666', mb: 2 }}>Tu carrito está vacío</Typography>
-
               <Button
                 variant="outlined"
                 sx={{ width: '100%' }}
@@ -136,6 +200,7 @@ function Sidebar() {
                   fontWeight: 'bold',
                   textTransform: 'none',
                 }}
+                onClick={handleCheckout} // Llamar a la función para procesar el pago
               >
                 IR A PAGAR
               </Button>
