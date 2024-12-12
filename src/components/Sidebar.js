@@ -1,269 +1,203 @@
 import React, { useState } from 'react';
-import { Box, Typography, List, ListItem, ListItemText, IconButton, Divider, InputBase, Button, Drawer } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {
+  Box,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Divider,
+  InputBase,
+  Drawer,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import HouseIcon from '@mui/icons-material/House';
-import DeleteIcon from '@mui/icons-material/Delete';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
-import { useCart } from './CartContext';
+import axios from 'axios';
 
-function Sidebar({ searchText, setSearchText }) {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+function Sidebar({ setProducts }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
+  // Función para abrir/cerrar el sidebar
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
 
-  // Calcular el subtotal
-  const calculateSubtotal = () => {
-    return cart.reduce((sum, item) => sum + item.precio * item.quantity, 0);
-  };
+  // Función para manejar cambios en la barra de búsqueda
+  const handleSearchChange = async (event) => {
+    const value = event.target.value;
+    setSearchText(value);
 
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value); // Actualiza el texto de búsqueda
-  };
-
-  // Función para manejar el pago y eliminar los productos del carrito
-  const handleCheckout = async () => {
-    if (cart.length === 0) {
-      alert('El carrito está vacío. Agrega productos antes de realizar el pago.');
+    if (!value.trim()) {
+      setProducts([]); // Limpiar resultados
       return;
     }
-  
-    // Preparamos los datos para enviarlos al backend
-    const productUpdates = cart.map(item => ({
-      id_producto: item.id_producto,
-      cantidad: item.cantidad,
-    }));
-  
+
     try {
-      // Enviar la actualización al backend
-      const response = await fetch('/api/productos/update-quantity', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ productUpdates }),
+      const response = await axios.get('http://localhost:4000/api/productos', {
+        params: { search: value },
       });
-  
-      // Verificamos la respuesta del servidor
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || 'Error al procesar el pago. Intenta nuevamente.'
-        );
-      }
-  
-      // Si la respuesta es exitosa, vaciamos el carrito
-      alert('Pago realizado exitosamente');
-      cart.forEach(item => removeFromCart(item.id_producto));
-  
-      // Actualizar el estado del carrito (si usas React, por ejemplo)
-      // setCart([]); // Solo si usas un estado en React
-  
+      setProducts(response.data); // Actualizar productos
     } catch (error) {
-      // Manejo del error
-      alert('Hubo un error al procesar el pago: ' + error.message);
+      console.error('Error al buscar productos:', error);
     }
   };
-  
-  
+
 
   return (
-    <Box
-      sx={{
-        width: 250,
-        bgcolor: '#f0f4e3',
-        padding: 2,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', mb: 2 }}>
-        <HouseIcon sx={{ fontSize: 40, color: '#666', mb: 1 }} />
-        <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', color: '#333', textAlign: 'center', fontSize: '1.5rem' }}>
-          MOSSAN
-        </Typography>
-        <Typography variant="subtitle1" sx={{ color: '#666', textAlign: 'center', fontSize: '0.875rem' }}>
-          Tienda de muebles
-        </Typography>
-        <Divider sx={{ width: '60%', mt: 1, mb: 2, bgcolor: '#666' }} />
-      </Box>
-
-      {/* Barra de búsqueda */}
-      <Box sx={{ width: '100%', mb: 2 }}>
-        <InputBase
-          value={searchText}
-          onChange={handleSearchChange}
-          placeholder="Buscar productos..."
-          sx={{
-            width: '100%',
-            padding: '8px 10px',
-            borderRadius: 20,
-            border: '1px solid #ccc',
-            backgroundColor: '#fff',
-            fontSize: '1rem',
-          }}
-          startAdornment={<SearchIcon sx={{ color: '#666', mr: 1 }} />}
-        />
-      </Box>
-
-      {/* Botón de Cesta */}
-      <Button
-        variant="contained"
-        startIcon={<ShoppingCartIcon />}
-        onClick={toggleDrawer(true)}
+    <>
+      {/* Botón de menú para pantallas pequeñas */}
+      <IconButton
         sx={{
-          backgroundColor: '#ffffff',
-          color: '#666',
-          borderRadius: 20,
-          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-          padding: '5px 15px',
-          textTransform: 'none',
-          fontWeight: 'bold',
-          mb: 3,
-          '&:hover': {
-            backgroundColor: '#e8e8e8',
-          },
+          position: 'fixed',
+          top: 16,
+          left: 16,
+          zIndex: 1200,
+          display: { xs: 'block', md: 'none' },
+        }}
+        onClick={toggleDrawer(true)}
+      >
+        <MenuIcon />
+      </IconButton>
+
+      {/* Sidebar principal */}
+      <Box
+        sx={{
+          width: { xs: '100%', md: 250 },
+          bgcolor: '#f0f4e3',
+          padding: 2,
+          height: '100vh',
+          position: { xs: 'fixed', md: 'sticky' },
+          top: 0,
+          left: 0,
+          zIndex: 1100,
+          display: { xs: 'none', md: 'flex' },
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        Cesta ({cart.length})
-      </Button>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            mb: 2,
+          }}
+        >
+          <HouseIcon sx={{ fontSize: 40, color: '#666', mb: 1 }} />
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{
+              fontWeight: 'bold',
+              color: '#333',
+              textAlign: 'center',
+              fontSize: '1.5rem',
+            }}
+          >
+            MOSSAN
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{ color: '#666', textAlign: 'center', fontSize: '0.875rem' }}
+          >
+            Tienda de muebles
+          </Typography>
+          <Divider sx={{ width: '60%', mt: 1, mb: 2, bgcolor: '#666' }} />
+        </Box>
 
-      {/* Drawer para el carrito */}
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box sx={{ width: 300, padding: 3, textAlign: 'center' }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>Mi Carrito</Typography>
+        {/* Barra de búsqueda */}
+        <Box sx={{ width: '100%', mb: 2 }}>
+          <InputBase
+            value={searchText}
+            onChange={handleSearchChange}
+            placeholder="Buscar productos..."
+            sx={{
+              width: '100%',
+              padding: '8px 10px',
+              borderRadius: 20,
+              border: '1px solid #ccc',
+              backgroundColor: '#fff',
+              fontSize: '1rem',
+            }}
+            startAdornment={<SearchIcon sx={{ color: '#666', mr: 1 }} />}
+          />
+        </Box>
 
-          {cart.length === 0 ? (
-            <>
-              <Typography variant="body1" sx={{ color: '#666', mb: 2 }}>Tu carrito está vacío</Typography>
-              <Button
-                variant="outlined"
-                sx={{ width: '100%' }}
-                onClick={toggleDrawer(false)} // Cierra el carrito
-              >
-                SEGUIR COMPRANDO
-              </Button>
-            </>
-          ) : (
-            <>
-              <List>
-                {cart.map((item, index) => (
-                  <ListItem key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-                    <img src={`http://localhost:4000/uploads/${item.imagen}`} alt={item.nombre} style={{ width: 50, height: 50, marginRight: 10 }} />
-                    <Box sx={{ flex: 1 }}>
-                      <Typography variant="body2">{item.nombre}</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>${item.precio.toLocaleString()}</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <IconButton onClick={() => updateQuantity(item.id_producto, item.quantity - 1)}>-</IconButton>
-                      <Typography>{item.quantity}</Typography>
-                      <IconButton onClick={() => updateQuantity(item.id_producto, item.quantity + 1)}>+</IconButton>
-                    </Box>
-                    <IconButton onClick={() => removeFromCart(item.id_producto)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
+        <Divider sx={{ my: 2, width: '80%' }} />
 
-              <Divider sx={{ my: 2 }} />
-              <Box sx={{ textAlign: 'left', padding: '0 16px' }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>Subtotal</Typography>
-                <Typography variant="body2">${calculateSubtotal().toLocaleString()}</Typography>
-
-                <Typography variant="body2" sx={{ mt: 1 }}>Costo de Envío</Typography>
-                <Typography variant="body2" color="text.secondary">Calculado en el checkout</Typography>
-
-                <Divider sx={{ my: 2 }} />
-
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total</Typography>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#333' }}>
-                  ${calculateSubtotal().toLocaleString()}
-                </Typography>
-              </Box>
-
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  backgroundColor: '#7b7b7b',
-                  color: '#fff',
-                  borderRadius: '20px',
-                  mt: 2,
-                  padding: '10px',
+        {/* Lista de navegación con enlaces */}
+        <List sx={{ width: '100%', textAlign: 'center' }}>
+          <ListItem button component={Link} to="/" sx={{ justifyContent: 'center', padding: '10px 0' }}>
+            <HomeIcon sx={{ mr: 1, color: '#666' }} />
+            <ListItemText
+              primary="Inicio"
+              primaryTypographyProps={{
+                sx: {
                   fontWeight: 'bold',
-                  textTransform: 'none',
-                }}
-                onClick={handleCheckout} // Llamar a la función para procesar el pago
-              >
-                IR A PAGAR
-              </Button>
-            </>
-          )}
+                  fontSize: '1rem',
+                  color: '#666',
+                },
+              }}
+            />
+          </ListItem>
+          <ListItem button component={Link} to="/products" sx={{ justifyContent: 'center', padding: '10px 0' }}>
+            <ListItemText
+              primary="Productos"
+              primaryTypographyProps={{
+                sx: {
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                  color: '#666',
+                },
+              }}
+            />
+          </ListItem>
+          <ListItem button component={Link} to="/about" sx={{ justifyContent: 'center', padding: '10px 0' }}>
+            <ListItemText
+              primary="Sobre nosotros"
+              primaryTypographyProps={{
+                sx: {
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                  color: '#666',
+                },
+              }}
+            />
+          </ListItem>
+          <ListItem button component={Link} to="/contact" sx={{ justifyContent: 'center', padding: '10px 0' }}>
+            <ListItemText
+              primary="Contáctanos"
+              primaryTypographyProps={{
+                sx: {
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                  color: '#666',
+                },
+              }}
+            />
+          </ListItem>
+        </List>
+      </Box>
+
+      {/* Drawer para pantallas pequeñas */}
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Box sx={{ width: 250, padding: 2 }}>
+          <IconButton
+            sx={{ alignSelf: 'flex-end' }}
+            onClick={toggleDrawer(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+          {/* Contenido del Drawer (Sidebar compacto para móvil) */}
+          {/* Puedes reutilizar los mismos elementos del sidebar principal */}
         </Box>
       </Drawer>
-
-      <Divider sx={{ my: 2, width: '80%' }} />
-
-      {/* Lista de navegación con enlaces */}
-      <List sx={{ width: '100%', textAlign: 'center' }}>
-        <ListItem button component={Link} to="/" sx={{ justifyContent: 'center', padding: '10px 0' }}>
-          <HomeIcon sx={{ mr: 1, color: '#666' }} />
-          <ListItemText
-            primary="Inicio"
-            primaryTypographyProps={{
-              sx: {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                color: '#666',
-              },
-            }}
-          />
-        </ListItem>
-        <ListItem button component={Link} to="/products" sx={{ justifyContent: 'center', padding: '10px 0' }}>
-          <ListItemText
-            primary="Productos"
-            primaryTypographyProps={{
-              sx: {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                color: '#666',
-              },
-            }}
-          />
-        </ListItem>
-        <ListItem button component={Link} to="/about" sx={{ justifyContent: 'center', padding: '10px 0' }}>
-          <ListItemText
-            primary="Sobre nosotros"
-            primaryTypographyProps={{
-              sx: {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                color: '#666',
-              },
-            }}
-          />
-        </ListItem>
-        <ListItem button component={Link} to="/contact" sx={{ justifyContent: 'center', padding: '10px 0' }}>
-          <ListItemText
-            primary="Contáctanos"
-            primaryTypographyProps={{
-              sx: {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                color: '#666',
-              },
-            }}
-          />
-        </ListItem>
-      </List>
-    </Box>
+    </>
   );
 }
 

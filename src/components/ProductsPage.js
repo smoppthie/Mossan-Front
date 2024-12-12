@@ -58,7 +58,7 @@ function ProductsPage() {
   return (
     <Box sx={{ padding: 3, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
       <Typography variant="h4" sx={{ marginBottom: 3, fontWeight: 'bold', color: '#3a3a3a', textAlign: 'center' }}>
-        Muebles
+        Productos Disponibles
       </Typography>
 
       {/* Filtros compactos */}
@@ -77,7 +77,7 @@ function ProductsPage() {
         }}
       >
         {/* Filtro de precio */}
-        <Box sx={{ width: 200 }}>
+        <Box sx={{ width: 300 }}>
           <Typography variant="caption" sx={{ color: '#666' }}>
             Rango de precios
           </Typography>
@@ -101,7 +101,7 @@ function ProductsPage() {
             bgcolor: '#f9f9f9',
             borderRadius: 1,
             boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-            padding: '5px 10px',
+            padding: '1px 5px',
             color: '#666'
           }}
         >
@@ -121,7 +121,7 @@ function ProductsPage() {
             bgcolor: '#f9f9f9',
             borderRadius: 1,
             boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-            padding: '5px 10px',
+            padding: '1px 5px',
             color: '#666'
           }}
         >
@@ -141,7 +141,7 @@ function ProductsPage() {
             bgcolor: '#f9f9f9',
             borderRadius: 1,
             boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-            padding: '5px 10px',
+            padding: '1px 5px',
             color: '#666'
           }}
         >
