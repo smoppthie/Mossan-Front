@@ -29,6 +29,7 @@ function MainContent() {
   return (
     <Box
       sx={{
+        marginLeft: { md: 35 },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around', // Espaciado entre imagen y texto

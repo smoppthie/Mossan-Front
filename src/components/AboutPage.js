@@ -6,7 +6,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 function AboutPage() {
   return (
-    <Box sx={{ padding: 3, backgroundColor: '#f0f4e3', minHeight: '100vh' }}>
+    <Box sx={{ marginLeft: { md: 35 }, padding: 3, backgroundColor: '#f0f4e3', minHeight: '100vh' }}>
       <Typography variant="h4" sx={{ marginBottom: 3, fontWeight: 'bold', color: '#3a3a3a' }}>
         ¿Quiénes somos?
       </Typography>
