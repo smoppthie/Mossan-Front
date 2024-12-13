@@ -5,8 +5,18 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 function AboutPage() {
   return (
-    <Box sx={{ marginLeft: { md: 35 }, padding: 3, backgroundColor: '#f0f4e3', minHeight: '100vh' }}>
-      <Typography variant="h4" sx={{ marginBottom: 3, fontWeight: 'bold', color: '#3a3a3a' }}>
+    <Box
+      sx={{
+        padding: 4,
+        background: 'linear-gradient(135deg,rgb(255, 255, 255),rgb(187, 222, 168))', // Fondo degradado llamativo
+        minHeight: '100vh',
+        color: '#333', // Asegúrate de que el texto sea legible
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{ marginBottom: 3, fontWeight: 'bold', color: '#2d2d2d', textAlign: 'center' }}
+      >
         ¿Quiénes somos?
       </Typography>
       <Typography
@@ -78,3 +88,4 @@ function AboutPage() {
 }
 
 export default AboutPage;
+
