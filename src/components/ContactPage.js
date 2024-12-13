@@ -67,7 +67,7 @@ function ContactPage() {
   };
 
   return (
-    <Box sx={{ marginLeft: { md: 35 }, display: 'flex', flexDirection: 'column', padding: 3 }}>
+    <Box sx={{ marginLeft: { md: 35 }, marginTop: 6, display: 'flex', flexDirection: 'column', padding: 3 }}>
       <Typography variant="h4" sx={{ mb: 3 }}>¡Contáctanos!</Typography>
       <form onSubmit={handleSubmit}>
         <TextField

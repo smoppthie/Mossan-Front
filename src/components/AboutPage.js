@@ -7,6 +7,7 @@ function AboutPage() {
   return (
     <Box
       sx={{
+        marginTop: 4,
         marginLeft: { md: 35 }, 
         padding: 4,
         background: 'linear-gradient(135deg,rgb(255, 255, 255),rgb(187, 222, 168))', // Fondo degradado llamativo

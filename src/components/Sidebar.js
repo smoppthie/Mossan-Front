@@ -15,26 +15,23 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 
-
 function Sidebar({ setProducts }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Función para abrir/cerrar el sidebar
+  // Función para abrir/cerrar el drawer
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
-
 
   // Contenido del Sidebar
   const sidebarContent = (
     <Box
       sx={{
-        width: { xs: 250, md: 250 },
+        width: 250,
+        height: '100%',
         bgcolor: '#f0f4e3',
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         padding: 2,
       }}
     >
@@ -134,8 +131,16 @@ function Sidebar({ setProducts }) {
           position: 'fixed',
           top: 16,
           left: 16,
-          zIndex: 1200,
-          display: { xs: 'block', md: 'none' },
+          zIndex: 1300, // Asegurar que esté encima de otros elementos
+          display: { xs: 'block', md: 'none' }, // Visible solo en xs
+          backgroundColor: '#333', // Fondo oscuro
+          color: '#fff', // Color del ícono
+          borderRadius: '50%',
+          padding: '8px',
+          boxShadow: '0px 4px 8px rgba(0,0,0,0.2)', // Sombra suave
+          '&:hover': {
+            backgroundColor: '#555',
+          },
         }}
         onClick={toggleDrawer(true)}
       >
@@ -151,6 +156,8 @@ function Sidebar({ setProducts }) {
           display: { xs: 'none', md: 'flex' },
           flexDirection: 'column',
           position: 'fixed',
+          top: 0,
+          left: 0,
         }}
       >
         {sidebarContent}

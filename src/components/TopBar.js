@@ -11,16 +11,22 @@ function TopBar() {
   return (
     <Box
       sx={{
-        bgcolor: '#333', // Color de fondo oscuro
-        color: '#fff', // Color del texto blanco
+        position: 'fixed', // Fijar la barra superior
+        top: 0,
+        left: 0,
+        width: '100%',
+        zIndex: 1300,
+        bgcolor: '#333',
+        color: '#fff',
         display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' }, // Columnas en pantallas pequeñas
+        flexDirection: { xs: 'column', sm: 'row' },
         alignItems: 'center',
-        justifyContent: { xs: 'center', sm: 'space-between' }, // Centrado en pantallas pequeñas
-        padding: { xs: '10px', sm: '5px 20px' }, // Más espacio en móviles
+        justifyContent: { xs: 'center', sm: 'space-between' },
+        padding: { xs: '10px', sm: '5px 20px' },
         fontSize: '0.875rem',
-        textAlign: { xs: 'center', sm: 'left' }, // Texto centrado en móviles
+        textAlign: { xs: 'center', sm: 'left' },
       }}
+      
     >
       {/* Información de contacto */}
       <Box

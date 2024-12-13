@@ -87,7 +87,7 @@ function ProductsPage() {
   };
 
   return (
-    <Box sx={{  marginLeft: { md: 35 }, padding: 3, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
+    <Box sx={{  marginLeft: { md: 35 }, marginTop: 8, padding: 3, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
       {/* Título de la página */}
       <Typography
         variant="h4"

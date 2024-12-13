@@ -29,6 +29,7 @@ function MainContent() {
   return (
     <Box
       sx={{
+        marginTop: 4,
         marginLeft: { md: 35 },
         display: 'flex',
         alignItems: 'center',
