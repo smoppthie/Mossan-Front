@@ -28,26 +28,40 @@ const FloatingCartButton = () => {
     <>
       {/* Botón flotante */}
       <Button
-        onClick={toggleCart(true)}
-        variant="contained"
-        sx={{
-          position: 'fixed',
-          bottom: 20,
-          right: 20,
-          borderRadius: '50%',
-          width: 60,
-          height: 60,
-          backgroundColor: '#007bff',
-          color: '#fff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          fontSize: 24,
-        }}
-      >
-        🛒
-      </Button>
+  onClick={toggleCart(true)} 
+  variant="contained"
+  sx={{
+    position: 'fixed',
+    bottom: 20,
+    right: 20,
+    borderRadius: '50%',
+    width: 60,
+    height: 60,
+    backgroundColor: '#007bff', // Color azul más llamativo
+    color: '#fff', // Color blanco del ícono y texto
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 8px 15px rgba(0, 0, 0, 0.2)', // Sombra más visible
+    fontSize: 24,
+    transition: 'transform 0.2s, background-color 0.2s', // Transición suave
+    '&:hover': {
+      backgroundColor: '#005bb5', // Color más oscuro al pasar el cursor
+      transform: 'scale(1.1)', // Aumenta ligeramente el tamaño
+    },
+  }}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="white" // Color blanco para el ícono
+    width="32px"
+    height="32px"
+  >
+    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.11 14c.49 0 .91-.33.98-.81l.54-2.99h8.28l.5 2.82c.12.63.67 1.07 1.3 1.07.73 0 1.34-.61 1.34-1.34 0-.06-.01-.11-.02-.17L17.9 4H4.84L4.06 1H0v2h2l3.6 9.59-.95 5.29c-.09.51.03 1.04.33 1.46.3.42.76.66 1.26.66H20v-2H6.42c-.04 0-.08-.02-.11-.06-.03-.03-.04-.08-.03-.12L7.11 14z" />
+  </svg>
+</Button>
+
 
       {/* Drawer para el carrito */}
       <Drawer anchor="right" open={isCartOpen} onClose={toggleCart(false)}>
